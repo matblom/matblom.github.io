@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Trippin</title>
+    <link rel="stylesheet" href="bundle.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="manifest" href="manifest.json">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+</head>
+
+<body>
+    <header class="mdc-top-app-bar mdc-top-app-bar--short">
+        <div class="mdc-top-app-bar__row">
+            <section class="mdc-top-app-bar__section mdc-top-app-bar__section--align-start">
+                <a href="#" class="material-icons mdc-top-app-bar__navigation-icon menu">menu</a>
+                <span class="mdc-top-app-bar__title">Trippin</span>
+            </section>
+            <section class="mdc-top-app-bar__section mdc-top-app-bar__section--align-end" role="toolbar">
+                <div class="mdc-menu-anchor">
+                    <button id="menu-button" class="mdc-icon-button material-icons mdc-top-app-bar__action-item menu" aria-label="reorder" alt="reorder">reorder</button>
+                </div>
+                <div class="mdc-menu" tabindex="-1" id="toolbar">
+                    <ul class="mdc-menu__items mdc-list" role="menu" aria-hidden="true">
+                        <li class=" mdc-list-item" role="menuitem" tabindex="0">
+                            A Menu Item
+                        </li>
+                        <li class="mdc-list-item" role="menuitem" tabindex="0">
+                            Another Menu Item
+                        </li>
+                    </ul>
+                </div>
+            </section>
+        </div>
+    </header>
+
+    <aside class="mdc-drawer mdc-drawer--temporary mdc-typography">
+        <nav class="mdc-drawer__drawer">
+            <header class="mdc-drawer__header">
+                <div class="mdc-drawer__header-content">
+                    MENU
+                </div>
+            </header>
+            <nav id="icon-with-text-demo" class="mdc-drawer__content mdc-list">
+                <a class="mdc-list-item mdc-list-item--activated" href="#">
+                    <i class="material-icons mdc-list-item__graphic" aria-hidden="true">home</i>Home
+                </a>
+                <a class="mdc-list-item" href="#">
+                    <i class="material-icons mdc-list-item__graphic" aria-hidden="true">account_circle</i>My trips
+                </a>
+                <a class="mdc-list-item" href="addatrip.html">
+                    <i class="material-icons mdc-list-item__graphic" aria-hidden="true">create</i>Add a trip
+                </a>
+                <a class="mdc-list-item" href="#">
+                    <i class="material-icons mdc-list-item__graphic" aria-hidden="true">settings</i>Settings
+                </a>
+                <a class="mdc-list-item" href="#">
+                    <i class="material-icons mdc-list-item__graphic" aria-hidden="true">language</i>Change language
+                </a>
+            </nav>
+        </nav>
+    </aside>
+
+    <main id="content">
+
+
+        <div>
+            <div class="mdc-card demo-card undefined">
+                <div class="mdc-card__primary-action" tabindex="0">
+                    <div class="mdc-card__media mdc-card__media--16-9" id="imageHolder0"></div>
+                    <div class="mdc-card__primary">
+                        <h2 id="titleHolder0" class="demo-card__title mdc-typography--headline6"></h2>
+                        <h3 id="authorHolder0" class="demo-card__subtitle mdc-typography--subtitle2"></h3>
+                    </div>
+                    <div id="descriptionHolder0" class="mdc-card__secondary mdc-typography--body2">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div>
+            <div class="mdc-card demo-card undefined">
+                <div class="mdc-card__primary-action" tabindex="0">
+                    <div class="mdc-card__media mdc-card__media--16-9" id="imageHolder1"></div>
+                    <div class="mdc-card__primary">
+                        <h2 id="titleHolder1" class="demo-card__title mdc-typography--headline6"></h2>
+                        <h3 id="authorHolder1" class="demo-card__subtitle mdc-typography--subtitle2"></h3>
+                    </div>
+                    <div id="descriptionHolder1" class="mdc-card__secondary mdc-typography--body2">
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div>
+            <div class="mdc-card demo-card undefined">
+                <div class="mdc-card__primary-action" tabindex="0">
+                    <div class="mdc-card__media mdc-card__media--16-9" id="imageHolder2"></div>
+                    <div class="mdc-card__primary">
+                        <h2 id="titleHolder2" class="demo-card__title mdc-typography--headline6"></h2>
+                        <h3 id="authorHolder2" class="demo-card__subtitle mdc-typography--subtitle2"></h3>
+                    </div>
+                    <div id="descriptionHolder2" class="mdc-card__secondary mdc-typography--body2">
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div>
+            <div class="mdc-card demo-card undefined">
+                <div class="mdc-card__primary-action" tabindex="0">
+                    <div class="mdc-card__media mdc-card__media--16-9" id="imageHolder3"></div>
+                    <div class="mdc-card__primary">
+                        <h2 id="titleHolder3" class="demo-card__title mdc-typography--headline6"></h2>
+                        <h3 id="authorHolder3" class="demo-card__subtitle mdc-typography--subtitle2"></h3>
+                    </div>
+                    <div id="descriptionHolder3" class="mdc-card__secondary mdc-typography--body2">
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+    </main>
+
+    
+    <script src="https://www.gstatic.com/firebasejs/5.3.0/firebase.js"></script>
+    <script>
+        // Initialize Firebase
+        var config = {
+            apiKey: "AIzaSyD2AcSZvUHnNxHO9pEtoyhI6CHxp-36EsE",
+            authDomain: "todolist-1720b.firebaseapp.com",
+            databaseURL: "https://todolist-1720b.firebaseio.com",
+            projectId: "todolist-1720b",
+            storageBucket: "todolist-1720b.appspot.com",
+            messagingSenderId: "85295220489"
+        };
+        firebase.initializeApp(config);
+        
+    </script>
+    <script src="bundle.js"></script>
+    <script> getFirebaseData()</script>
+</body>
+
+</html>

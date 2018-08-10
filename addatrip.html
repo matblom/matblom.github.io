@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Trippin</title>
+    <link rel="stylesheet" href="bundle.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="manifest" href="manifest.json">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+</head>
+
+<body style="margin:0px">
+
+    <div class="container">
+
+        <header id="header" class="mdc-top-app-bar mdc-top-app-bar--short">
+            <div class="mdc-top-app-bar__row">
+                <section class="mdc-top-app-bar__section mdc-top-app-bar__section--align-start">
+                    <a href="#" class="material-icons mdc-top-app-bar__navigation-icon menu">menu</a>
+                    <span class="mdc-top-app-bar__title">Trippin</span>
+                </section>
+                <section class="mdc-top-app-bar__section mdc-top-app-bar__section--align-end" role="toolbar">
+                    <div class="mdc-menu-anchor">
+                        <button id="menu-button" class="mdc-icon-button material-icons mdc-top-app-bar__action-item menu" aria-label="reorder" alt="reorder">reorder</button>
+                    </div>
+                    <div class="mdc-menu" tabindex="-1" id="toolbar">
+                        <ul class="mdc-menu__items mdc-list" role="menu" aria-hidden="true">
+                            <li class=" mdc-list-item" role="menuitem" tabindex="0">
+                                A Menu Item
+                            </li>
+                            <li class="mdc-list-item" role="menuitem" tabindex="0">
+                                Another Menu Item
+                            </li>
+                        </ul>
+                    </div>
+                </section>
+            </div>
+        </header>
+
+        <aside class="mdc-drawer mdc-drawer--temporary mdc-typography">
+            <nav class="mdc-drawer__drawer">
+                <header class="mdc-drawer__header">
+                    <div class="mdc-drawer__header-content">
+                        MENU
+                    </div>
+                </header>
+                <nav id="icon-with-text-demo" class="mdc-drawer__content mdc-list">
+                    <a class="mdc-list-item" href="index.html">
+                        <i class="material-icons mdc-list-item__graphic" aria-hidden="true">home</i>Home
+                    </a>
+                    <a class="mdc-list-item" href="#">
+                        <i class="material-icons mdc-list-item__graphic" aria-hidden="true">account_circle</i>My trips
+                    </a>
+                    <a class="mdc-list-item mdc-list-item--activated" href="addatrip.html">
+                        <i class="material-icons mdc-list-item__graphic" aria-hidden="true">create</i>Add a trip
+                    </a>
+                    <a class="mdc-list-item" href="#">
+                        <i class="material-icons mdc-list-item__graphic" aria-hidden="true">settings</i>Settings
+                    </a>
+                    <a class="mdc-list-item" href="#">
+                        <i class="material-icons mdc-list-item__graphic" aria-hidden="true">language</i>Change language
+                    </a>
+                </nav>
+            </nav>
+        </aside>
+
+        <main id="content">
+
+            <form id="myform">
+                <h3 class="mdc-typography--subtitle1">Add information</h3>
+                <div class="text-field-row text-field-row-fullwidth">
+                    <div class="text-field-container">
+                        <div class="mdc-text-field text-field mdc-text-field--fullwidth mdc-text-field--upgraded">
+                            <input id="titleId" name="Title" type="text" placeholder="Title" class="mdc-text-field__input">
+                        </div>
+                    </div>
+                    <div class="text-field-container">
+                        <div class="mdc-text-field text-field mdc-text-field--fullwidth mdc-text-field--upgraded">
+                            <input id="authorId" name="author" type="text" placeholder="by" class="mdc-text-field__input">
+                        </div>
+                    </div>
+                    <div class="text-field-container">
+                        <div class="mdc-text-field text-field mdc-text-field--fullwidth mdc-text-field--upgraded">
+                            <input id="descriptionId" name="description" type="text" placeholder="description" class="mdc-text-field__input">
+                        </div>
+                    </div>
+                </div>
+                <div class="mdc-slider mdc-slider--discrete slider" tabindex="0" role="slider" aria-valuemin="0" aria-valuemax="9" aria-valuenow="5"
+                    aria-label="Select Value">
+                    <h6 class="mdc-typography--subtitle2">Rate trip</h6>
+                    <div class="mdc-slider__track-container">
+                        <div class="mdc-slider__track"></div>
+                    </div>
+                    <div class="mdc-slider__thumb-container">
+                        <div class="mdc-slider__pin">
+                            <span class="mdc-slider__pin-value-marker"></span>
+                        </div>
+                        <svg class="mdc-slider__thumb" width="21" height="21">
+                            <circle cx="10.5" cy="10.5" r="7.875"></circle>
+                        </svg>
+                        <div class="mdc-slider__focus-ring"></div>
+                    </div>
+                </div>
+                <button onclick="writeUserData()" type="button" class="mdc-button mdc-button--dense">Submit</button>
+            </form>
+
+            <aside id="my-mdc-dialog" class="mdc-dialog" role="alertdialog" aria-labelledby="my-mdc-dialog-label" aria-describedby="my-mdc-dialog-description">
+                <div class="mdc-dialog__surface">
+                    <header class="mdc-dialog__header">
+                        <h2 id="my-mdc-dialog-label" class="mdc-dialog__header__title">
+                            Use Google's location service?
+                        </h2>
+                    </header>
+                    <section id="my-mdc-dialog-description" class="mdc-dialog__body">
+                        Let Google help apps determine location. This means sending anonymous location data to Google, even when no apps are running.
+                    </section>
+                    <footer class="mdc-dialog__footer">
+                        <button type="button" class="mdc-button mdc-dialog__footer__button mdc-dialog__footer__button--cancel">Decline</button>
+                        <button type="button" class="mdc-button mdc-dialog__footer__button mdc-dialog__footer__button--accept">Accept</button>
+                    </footer>
+                </div>
+                <div class="mdc-dialog__backdrop"></div>
+            </aside>
+
+            <div id='uploadstuff'>
+                <progress value="0" max="100" id="uploader">0%</progress>
+                <input id="fileButton" type="file" class="mdc-button mdc-button--dense" />
+
+            </div>
+
+            <div class="mdc-snackbar" aria-live="assertive" aria-atomic="true" aria-hidden="true">
+                <div class="mdc-snackbar__text"></div>
+                <div class="mdc-snackbar__action-wrapper">
+                    <button type="button" class="mdc-snackbar__action-button"></button>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="bundle.js"></script>
+    <script>initTipATripPage()</script>
+    <script src="https://www.gstatic.com/firebasejs/5.3.0/firebase.js"></script>
+    <script>
+
+        // Initialize Firebase
+        var config = {
+            apiKey: "AIzaSyD2AcSZvUHnNxHO9pEtoyhI6CHxp-36EsE",
+            authDomain: "todolist-1720b.firebaseapp.com",
+            databaseURL: "https://todolist-1720b.firebaseio.com",
+            projectId: "todolist-1720b",
+            storageBucket: "todolist-1720b.appspot.com",
+            messagingSenderId: "85295220489"
+        };
+        firebase.initializeApp(config);
+    </script>
+</body>
+
+</html>
