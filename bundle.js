@@ -431,129 +431,6 @@ Object.defineProperty(exports, 'MDCSlidableDrawerFoundation', {
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.remapEvent = remapEvent;
-exports.getTransformPropertyName = getTransformPropertyName;
-exports.supportsCssCustomProperties = supportsCssCustomProperties;
-exports.applyPassive = applyPassive;
-exports.saveElementTabState = saveElementTabState;
-exports.restoreElementTabState = restoreElementTabState;
-/**
- * Copyright 2016 Google Inc. All Rights Reserved.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-
-var TAB_DATA = 'data-mdc-tabindex';
-var TAB_DATA_HANDLED = 'data-mdc-tabindex-handled';
-
-var storedTransformPropertyName_ = void 0;
-var supportsPassive_ = void 0;
-
-// Remap touch events to pointer events, if the browser doesn't support touch events.
-function remapEvent(eventName) {
-  var globalObj = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : window;
-
-  if (!('ontouchstart' in globalObj.document)) {
-    switch (eventName) {
-      case 'touchstart':
-        return 'pointerdown';
-      case 'touchmove':
-        return 'pointermove';
-      case 'touchend':
-        return 'pointerup';
-      default:
-        return eventName;
-    }
-  }
-
-  return eventName;
-}
-
-// Choose the correct transform property to use on the current browser.
-function getTransformPropertyName() {
-  var globalObj = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : window;
-  var forceRefresh = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
-
-  if (storedTransformPropertyName_ === undefined || forceRefresh) {
-    var el = globalObj.document.createElement('div');
-    var transformPropertyName = 'transform' in el.style ? 'transform' : '-webkit-transform';
-    storedTransformPropertyName_ = transformPropertyName;
-  }
-
-  return storedTransformPropertyName_;
-}
-
-// Determine whether the current browser supports CSS properties.
-function supportsCssCustomProperties() {
-  var globalObj = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : window;
-
-  if ('CSS' in globalObj) {
-    return globalObj.CSS.supports('(--color: red)');
-  }
-  return false;
-}
-
-// Determine whether the current browser supports passive event listeners, and if so, use them.
-function applyPassive() {
-  var globalObj = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : window;
-  var forceRefresh = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
-
-  if (supportsPassive_ === undefined || forceRefresh) {
-    var isSupported = false;
-    try {
-      globalObj.document.addEventListener('test', null, { get passive() {
-          isSupported = true;
-        } });
-    } catch (e) {}
-
-    supportsPassive_ = isSupported;
-  }
-
-  return supportsPassive_ ? { passive: true } : false;
-}
-
-// Save the tab state for an element.
-function saveElementTabState(el) {
-  if (el.hasAttribute('tabindex')) {
-    el.setAttribute(TAB_DATA, el.getAttribute('tabindex'));
-  }
-  el.setAttribute(TAB_DATA_HANDLED, true);
-}
-
-// Restore the tab state for an element, if it was saved.
-function restoreElementTabState(el) {
-  // Only modify elements we've already handled, in case anything was dynamically added since we saved state.
-  if (el.hasAttribute(TAB_DATA_HANDLED)) {
-    if (el.hasAttribute(TAB_DATA)) {
-      el.setAttribute('tabindex', el.getAttribute(TAB_DATA));
-      el.removeAttribute(TAB_DATA);
-    } else {
-      el.removeAttribute('tabindex');
-    }
-    el.removeAttribute(TAB_DATA_HANDLED);
-  }
-}
-
-/***/ }),
-/* 5 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
 exports.util = exports.RippleCapableSurface = exports.MDCRippleFoundation = exports.MDCRipple = undefined;
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
@@ -808,6 +685,129 @@ exports.MDCRipple = MDCRipple;
 exports.MDCRippleFoundation = _foundation2.default;
 exports.RippleCapableSurface = RippleCapableSurface;
 exports.util = util;
+
+/***/ }),
+/* 5 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.remapEvent = remapEvent;
+exports.getTransformPropertyName = getTransformPropertyName;
+exports.supportsCssCustomProperties = supportsCssCustomProperties;
+exports.applyPassive = applyPassive;
+exports.saveElementTabState = saveElementTabState;
+exports.restoreElementTabState = restoreElementTabState;
+/**
+ * Copyright 2016 Google Inc. All Rights Reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+var TAB_DATA = 'data-mdc-tabindex';
+var TAB_DATA_HANDLED = 'data-mdc-tabindex-handled';
+
+var storedTransformPropertyName_ = void 0;
+var supportsPassive_ = void 0;
+
+// Remap touch events to pointer events, if the browser doesn't support touch events.
+function remapEvent(eventName) {
+  var globalObj = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : window;
+
+  if (!('ontouchstart' in globalObj.document)) {
+    switch (eventName) {
+      case 'touchstart':
+        return 'pointerdown';
+      case 'touchmove':
+        return 'pointermove';
+      case 'touchend':
+        return 'pointerup';
+      default:
+        return eventName;
+    }
+  }
+
+  return eventName;
+}
+
+// Choose the correct transform property to use on the current browser.
+function getTransformPropertyName() {
+  var globalObj = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : window;
+  var forceRefresh = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
+
+  if (storedTransformPropertyName_ === undefined || forceRefresh) {
+    var el = globalObj.document.createElement('div');
+    var transformPropertyName = 'transform' in el.style ? 'transform' : '-webkit-transform';
+    storedTransformPropertyName_ = transformPropertyName;
+  }
+
+  return storedTransformPropertyName_;
+}
+
+// Determine whether the current browser supports CSS properties.
+function supportsCssCustomProperties() {
+  var globalObj = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : window;
+
+  if ('CSS' in globalObj) {
+    return globalObj.CSS.supports('(--color: red)');
+  }
+  return false;
+}
+
+// Determine whether the current browser supports passive event listeners, and if so, use them.
+function applyPassive() {
+  var globalObj = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : window;
+  var forceRefresh = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
+
+  if (supportsPassive_ === undefined || forceRefresh) {
+    var isSupported = false;
+    try {
+      globalObj.document.addEventListener('test', null, { get passive() {
+          isSupported = true;
+        } });
+    } catch (e) {}
+
+    supportsPassive_ = isSupported;
+  }
+
+  return supportsPassive_ ? { passive: true } : false;
+}
+
+// Save the tab state for an element.
+function saveElementTabState(el) {
+  if (el.hasAttribute('tabindex')) {
+    el.setAttribute(TAB_DATA, el.getAttribute('tabindex'));
+  }
+  el.setAttribute(TAB_DATA_HANDLED, true);
+}
+
+// Restore the tab state for an element, if it was saved.
+function restoreElementTabState(el) {
+  // Only modify elements we've already handled, in case anything was dynamically added since we saved state.
+  if (el.hasAttribute(TAB_DATA_HANDLED)) {
+    if (el.hasAttribute(TAB_DATA)) {
+      el.setAttribute('tabindex', el.getAttribute(TAB_DATA));
+      el.removeAttribute(TAB_DATA);
+    } else {
+      el.removeAttribute('tabindex');
+    }
+    el.removeAttribute(TAB_DATA_HANDLED);
+  }
+}
 
 /***/ }),
 /* 6 */
@@ -3125,9 +3125,148 @@ var _textfield = __webpack_require__(41);
 
 var _slider = __webpack_require__(57);
 
-var _ripple = __webpack_require__(5);
+var _ripple = __webpack_require__(4);
 
-var _dialog = __webpack_require__(59);
+var _iconToggle = __webpack_require__(59);
+
+var _dialog = __webpack_require__(63);
+
+/* ICON TOGGLES NOT WORKING */
+
+// Initialize Firebase
+var config = {
+    apiKey: "AIzaSyD2AcSZvUHnNxHO9pEtoyhI6CHxp-36EsE",
+    authDomain: "todolist-1720b.firebaseapp.com",
+    databaseURL: "https://todolist-1720b.firebaseio.com",
+    projectId: "todolist-1720b",
+    storageBucket: "todolist-1720b.appspot.com",
+    messagingSenderId: "85295220489"
+};
+firebase.initializeApp(config);
+
+window.signupInit = function () {
+    var username = new _textfield.MDCTextField(document.querySelector('.username'));
+    var password = new _textfield.MDCTextField(document.querySelector('.password'));
+    var repassword = new _textfield.MDCTextField(document.querySelector('.repassword'));
+    var email = new _textfield.MDCTextField(document.querySelector('.email'));
+
+    new _ripple.MDCRipple(document.querySelector('.signup'));
+    new _ripple.MDCRipple(document.querySelector('.login'));
+
+    var loginbtn = document.querySelector('.login');
+    var signupbtn = document.querySelector('.signup');
+
+    loginbtn.addEventListener('click', function () {
+        window.location.href = "login.html";
+    });
+    signupbtn.addEventListener('click', function () {
+        var email = document.querySelector('#email-input').value;
+        var password = document.querySelector('#password-input').value;
+        var repassword = document.querySelector('#repassword-input').value;
+        var username = document.querySelector('#username-input').value;
+
+        if (password !== repassword) {
+            alert("passwords differ");
+        } else {
+            firebase.auth().createUserWithEmailAndPassword(email, password).catch(function (error) {
+                var errorCode = error.code;
+                var errorMessage = error.message;
+                console.log('ERROR ', errorCode);
+                console.log(errorMessage);
+            });
+
+            var dialog = new _dialog.MDCDialog(document.querySelector('#my-mdc-dialog'));
+            dialog.show();
+
+            document.querySelector(".mdc-dialog__footer__button--accept").addEventListener('click', function () {
+                postDisplayName(username);
+                window.location.href = "addatrip.html";
+            });
+
+            document.querySelector(".mdc-dialog__footer__button--cancel").addEventListener('click', function () {
+                postDisplayName(username);
+                window.location.href = "home.html";
+            });
+
+            //postDisplayName();
+            // firebase.auth().onAuthStateChanged(firebaseUser => {
+            //     firebaseUser.updateProfile({ displayName: username });
+            // });
+        }
+    });
+};
+
+function postDisplayName(username) {
+
+    var user = firebase.auth().currentUser;
+    user.updateProfile({ displayName: username });
+}
+
+window.loginInit = function () {
+    var username = new _textfield.MDCTextField(document.querySelector('.username'));
+    var password = new _textfield.MDCTextField(document.querySelector('.password'));
+
+    new _ripple.MDCRipple(document.querySelector('.signup'));
+    new _ripple.MDCRipple(document.querySelector('.login'));
+
+    var loginbtn = document.querySelector('.login');
+    var signupbtn = document.querySelector('.signup');
+
+    signupbtn.addEventListener('click', function (e) {
+        window.location.href = "signup.html";
+    });
+    loginbtn.addEventListener('click', function (e) {
+        var username = document.querySelector('#username-input').value;
+        var password = document.querySelector('#password-input').value;
+        console.log('username: ' + username + ' password: ' + password);
+        //username: admin@admin.nl password: adminroot
+        var promise = firebase.auth().signInWithEmailAndPassword(username, password);
+        promise.catch(function (error) {
+            var errorCode = error.code;
+            var errorMessage = error.message;
+            console.log('OOPS error ' + errorCode + ' met ' + errorMessage);
+        });
+    });
+};
+
+firebase.auth().onAuthStateChanged(function (firebaseUser) {
+    if (firebaseUser) {
+        console.log(firebaseUser);
+        var signedIn = document.querySelector('.signin');
+        signedIn.innerHTML = 'My stuff';
+        signedIn.addEventListener('click', function () {
+            window.location.href = "index.html";
+        });
+
+        getUserInfo(firebaseUser);
+    } else {
+        var toBeSignedIn = document.querySelector('.signin');
+        toBeSignedIn.innerHTML = 'Sign in';
+        toBeSignedIn.addEventListener('click', function () {
+            window.location.href = "login.html";
+        });
+        console.log('not logged in');
+    }
+});
+
+window.getUserInfo = function (user) {
+    document.querySelector('.displayNameHolder').innerHTML = user.displayName;
+};
+
+/* LOG OUT */
+document.querySelector('#logout').addEventListener('click', function () {
+    firebase.auth().signOut();
+
+    var snackbar = new _snackbar.MDCSnackbar(document.querySelector('.logout-snackbar'));
+    var dataObj = {
+        message: "Logout Succes",
+        actionText: 'Cya',
+        actionHandler: function actionHandler() {
+            console.log('so hasty...');
+        }
+    };
+    snackbar.show(dataObj);
+});
 
 /* DRAWER */
 var drawer = new _drawer.MDCTemporaryDrawer(document.querySelector('.mdc-drawer--temporary'));
@@ -3194,7 +3333,8 @@ window.writeUserData = function () {
 
     console.log("title " + title + " author " + author + " description " + description + " rating: " + rating + " imagepath: " + imagepath);
     var database = firebase.database();
-    database.ref('trips/0').push({
+    var currentUser = firebase.auth().currentUser;
+    database.ref('trips/' + currentUser.displayName).push({
         author: author,
         title: title,
         description: description,
@@ -3206,32 +3346,39 @@ window.writeUserData = function () {
     showSnackbar();
 };
 
-window.getImage = function (imagepath, i) {
+window.getImage = function (imagepath, clone) {
     var storage = firebase.storage();
     var storageRef = storage.ref();
     var imageRef = storageRef.child(imagepath);
     imageRef.getDownloadURL().then(function (url) {
-        document.getElementById('imageHolder' + i).style.backgroundImage = 'url(' + url + ')';
+        clone.querySelector('#imageHolder').style.backgroundImage = 'url(' + url + ')';
+        //document.getElementById(`imageHolder${i}`).style.backgroundImage = `url(${url})`;
     });
 };
 
 /* get info on index*/
-window.getFirebaseData = function () {
+window.fetchFirebaseData = function () {
     var database = firebase.database();
     var ref = database.ref('trips');
     ref.on('value', gotData, gotError);
 };
 
 function gotData(data) {
-    var list = data.val()[0];
+    var list = data.val();
     var goodlist = Object.values(list);
-    //console.log('goodlist: ', goodlist)
-    for (var i = 0; i < goodlist.length; i++) {
+    for (var j = 0; j < goodlist.length; j++) {
+        var userlist = Object.values(goodlist[j]);
+        for (var i = 0; i < userlist.length; i++) {
+            var template = document.querySelector('#content_template');
+            var clone = document.importNode(template.content, true).querySelector('div');
+            clone.querySelector('#titleHolder').innerHTML = userlist[i].title;
+            clone.querySelector('#authorHolder').innerHTML = userlist[i].author;
+            clone.querySelector('#descriptionHolder').innerHTML = userlist[i].description;
 
-        document.getElementById('titleHolder' + i).innerHTML = goodlist[i].title;
-        document.getElementById('authorHolder' + i).innerHTML = goodlist[i].author;
-        document.getElementById('descriptionHolder' + i).innerHTML = goodlist[i].description;
-        getImage(goodlist[i].imagepath, i);
+            getImage(userlist[i].imagepath, clone);
+
+            document.querySelector('#content').appendChild(clone);
+        }
     }
 }
 
@@ -3240,9 +3387,32 @@ function gotError(err) {
     console.log(err);
 }
 
+window.fetchMyFirebaseData = function () {
+
+    var database = firebase.database();
+    var ref = database.ref('trips');
+    ref.on('value', gotMyData, gotError);
+};
+
+function gotMyData(data) {
+    var list = data.val();
+    var userlist = Object.values(list.admin);
+    for (var i = 0; i < userlist.length; i++) {
+        var template = document.querySelector('#content_template');
+        var clone = document.importNode(template.content, true).querySelector('div');
+        clone.querySelector('#titleHolder').innerHTML = userlist[i].title;
+        clone.querySelector('#authorHolder').innerHTML = userlist[i].author;
+        clone.querySelector('#descriptionHolder').innerHTML = userlist[i].description;
+
+        getImage(userlist[i].imagepath, clone);
+
+        document.querySelector('#content').appendChild(clone);
+    }
+}
+
 /* SNACKBAR */
 function showSnackbar() {
-    var snackbar = new _snackbar.MDCSnackbar(document.querySelector('.mdc-snackbar'));
+    var snackbar = new _snackbar.MDCSnackbar(document.querySelector('.upload-snackbar'));
     var dataObj = {
         message: "Submitted your trip",
         actionText: 'GREAT',
@@ -3252,8 +3422,6 @@ function showSnackbar() {
     };
     snackbar.show(dataObj);
 }
-
-// const dialog = new MDCDialog(document.querySelector('#my-mdc-dialog'));
 
 /***/ }),
 /* 25 */
@@ -3297,7 +3465,7 @@ Object.defineProperty(exports, 'MDCPersistentDrawerFoundation', {
   }
 });
 
-var _util = __webpack_require__(4);
+var _util = __webpack_require__(5);
 
 var util = _interopRequireWildcard(_util);
 
@@ -3325,7 +3493,7 @@ var _foundation = __webpack_require__(27);
 
 var _foundation2 = _interopRequireDefault(_foundation);
 
-var _util = __webpack_require__(4);
+var _util = __webpack_require__(5);
 
 var util = _interopRequireWildcard(_util);
 
@@ -4049,7 +4217,7 @@ var _foundation = __webpack_require__(32);
 
 var _foundation2 = _interopRequireDefault(_foundation);
 
-var _util = __webpack_require__(4);
+var _util = __webpack_require__(5);
 
 var util = _interopRequireWildcard(_util);
 
@@ -6459,7 +6627,7 @@ var _component = __webpack_require__(1);
 
 var _component2 = _interopRequireDefault(_component);
 
-var _index = __webpack_require__(5);
+var _index = __webpack_require__(4);
 
 var _util = __webpack_require__(6);
 
@@ -10947,6 +11115,746 @@ exports.default = MDCSliderFoundation;
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
+exports.MDCIconToggleFoundation = exports.MDCIconToggle = undefined;
+
+var _get = function get(object, property, receiver) { if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { return get(parent, property, receiver); } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } };
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _component = __webpack_require__(1);
+
+var _component2 = _interopRequireDefault(_component);
+
+var _foundation = __webpack_require__(60);
+
+var _foundation2 = _interopRequireDefault(_foundation);
+
+var _index = __webpack_require__(4);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; } /**
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                * @license
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                * Copyright 2016 Google Inc. All Rights Reserved.
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                *
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                * Licensed under the Apache License, Version 2.0 (the "License");
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                * you may not use this file except in compliance with the License.
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                * You may obtain a copy of the License at
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                *
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                *      http://www.apache.org/licenses/LICENSE-2.0
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                *
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                * Unless required by applicable law or agreed to in writing, software
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                * distributed under the License is distributed on an "AS IS" BASIS,
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                * See the License for the specific language governing permissions and
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                * limitations under the License.
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                */
+
+/**
+ * @extends {MDCComponent<!MDCIconToggleFoundation>}
+ */
+var MDCIconToggle = function (_MDCComponent) {
+  _inherits(MDCIconToggle, _MDCComponent);
+
+  _createClass(MDCIconToggle, null, [{
+    key: 'attachTo',
+    value: function attachTo(root) {
+      return new MDCIconToggle(root);
+    }
+  }]);
+
+  function MDCIconToggle() {
+    var _ref;
+
+    _classCallCheck(this, MDCIconToggle);
+
+    for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
+      args[_key] = arguments[_key];
+    }
+
+    /** @private {!MDCRipple} */
+    var _this = _possibleConstructorReturn(this, (_ref = MDCIconToggle.__proto__ || Object.getPrototypeOf(MDCIconToggle)).call.apply(_ref, [this].concat(args)));
+
+    _this.ripple_ = _this.initRipple_();
+    return _this;
+  }
+
+  /** @return {!Element} */
+
+
+  _createClass(MDCIconToggle, [{
+    key: 'initRipple_',
+
+
+    /**
+     * @return {!MDCRipple}
+     * @private
+     */
+    value: function initRipple_() {
+      var _this2 = this;
+
+      var adapter = Object.assign(_index.MDCRipple.createAdapter(this), {
+        isUnbounded: function isUnbounded() {
+          return true;
+        },
+        isSurfaceActive: function isSurfaceActive() {
+          return _this2.foundation_.isKeyboardActivated();
+        }
+      });
+      var foundation = new _index.MDCRippleFoundation(adapter);
+      return new _index.MDCRipple(this.root_, foundation);
+    }
+  }, {
+    key: 'destroy',
+    value: function destroy() {
+      this.ripple_.destroy();
+      _get(MDCIconToggle.prototype.__proto__ || Object.getPrototypeOf(MDCIconToggle.prototype), 'destroy', this).call(this);
+    }
+
+    /** @return {!MDCIconToggleFoundation} */
+
+  }, {
+    key: 'getDefaultFoundation',
+    value: function getDefaultFoundation() {
+      var _this3 = this;
+
+      return new _foundation2.default({
+        addClass: function addClass(className) {
+          return _this3.iconEl_.classList.add(className);
+        },
+        removeClass: function removeClass(className) {
+          return _this3.iconEl_.classList.remove(className);
+        },
+        registerInteractionHandler: function registerInteractionHandler(type, handler) {
+          return _this3.root_.addEventListener(type, handler);
+        },
+        deregisterInteractionHandler: function deregisterInteractionHandler(type, handler) {
+          return _this3.root_.removeEventListener(type, handler);
+        },
+        setText: function setText(text) {
+          return _this3.iconEl_.textContent = text;
+        },
+        getTabIndex: function getTabIndex() {
+          return (/* number */_this3.root_.tabIndex
+          );
+        },
+        setTabIndex: function setTabIndex(tabIndex) {
+          return _this3.root_.tabIndex = tabIndex;
+        },
+        getAttr: function getAttr(name, value) {
+          return _this3.root_.getAttribute(name, value);
+        },
+        setAttr: function setAttr(name, value) {
+          return _this3.root_.setAttribute(name, value);
+        },
+        rmAttr: function rmAttr(name) {
+          return _this3.root_.removeAttribute(name);
+        },
+        notifyChange: function notifyChange(evtData) {
+          return _this3.emit(_foundation2.default.strings.CHANGE_EVENT, evtData);
+        }
+      });
+    }
+  }, {
+    key: 'initialSyncWithDOM',
+    value: function initialSyncWithDOM() {
+      this.on = this.root_.getAttribute(_foundation2.default.strings.ARIA_PRESSED) === 'true';
+      this.disabled = this.root_.getAttribute(_foundation2.default.strings.ARIA_DISABLED) === 'true';
+    }
+
+    /** @return {!MDCRipple} */
+
+  }, {
+    key: 'refreshToggleData',
+    value: function refreshToggleData() {
+      this.foundation_.refreshToggleData();
+    }
+  }, {
+    key: 'iconEl_',
+    get: function get() {
+      var sel = this.root_.dataset['iconInnerSelector'];
+
+      return sel ?
+      /** @type {!Element} */this.root_.querySelector(sel) : this.root_;
+    }
+  }, {
+    key: 'ripple',
+    get: function get() {
+      return this.ripple_;
+    }
+
+    /** @return {boolean} */
+
+  }, {
+    key: 'on',
+    get: function get() {
+      return this.foundation_.isOn();
+    }
+
+    /** @param {boolean} isOn */
+    ,
+    set: function set(isOn) {
+      this.foundation_.toggle(isOn);
+    }
+
+    /** @return {boolean} */
+
+  }, {
+    key: 'disabled',
+    get: function get() {
+      return this.foundation_.isDisabled();
+    }
+
+    /** @param {boolean} isDisabled */
+    ,
+    set: function set(isDisabled) {
+      this.foundation_.setDisabled(isDisabled);
+    }
+  }]);
+
+  return MDCIconToggle;
+}(_component2.default);
+
+exports.MDCIconToggle = MDCIconToggle;
+exports.MDCIconToggleFoundation = _foundation2.default;
+
+/***/ }),
+/* 60 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _foundation = __webpack_require__(0);
+
+var _foundation2 = _interopRequireDefault(_foundation);
+
+var _adapter = __webpack_require__(61);
+
+var _constants = __webpack_require__(62);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; } /**
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                * @license
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                * Copyright 2016 Google Inc. All Rights Reserved.
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                *
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                * Licensed under the Apache License, Version 2.0 (the "License");
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                * you may not use this file except in compliance with the License.
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                * You may obtain a copy of the License at
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                *
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                *      http://www.apache.org/licenses/LICENSE-2.0
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                *
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                * Unless required by applicable law or agreed to in writing, software
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                * distributed under the License is distributed on an "AS IS" BASIS,
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                * See the License for the specific language governing permissions and
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                * limitations under the License.
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                */
+
+/* eslint-disable no-unused-vars */
+
+
+/**
+ * @extends {MDCFoundation<!MDCIconToggleAdapter>}
+ */
+var MDCIconToggleFoundation = function (_MDCFoundation) {
+  _inherits(MDCIconToggleFoundation, _MDCFoundation);
+
+  _createClass(MDCIconToggleFoundation, null, [{
+    key: 'cssClasses',
+    get: function get() {
+      return _constants.cssClasses;
+    }
+  }, {
+    key: 'strings',
+    get: function get() {
+      return _constants.strings;
+    }
+  }, {
+    key: 'defaultAdapter',
+    get: function get() {
+      return {
+        addClass: function addClass() /* className: string */{},
+        removeClass: function removeClass() /* className: string */{},
+        registerInteractionHandler: function registerInteractionHandler() /* type: string, handler: EventListener */{},
+        deregisterInteractionHandler: function deregisterInteractionHandler() /* type: string, handler: EventListener */{},
+        setText: function setText() /* text: string */{},
+        getTabIndex: function getTabIndex() {
+          return (/* number */0
+          );
+        },
+        setTabIndex: function setTabIndex() /* tabIndex: number */{},
+        getAttr: function getAttr() {
+          return (/* name: string */ /* string */''
+          );
+        },
+        setAttr: function setAttr() /* name: string, value: string */{},
+        rmAttr: function rmAttr() /* name: string */{},
+        notifyChange: function notifyChange() /* evtData: IconToggleEvent */{}
+      };
+    }
+  }]);
+
+  function MDCIconToggleFoundation(adapter) {
+    _classCallCheck(this, MDCIconToggleFoundation);
+
+    /** @private {boolean} */
+    var _this = _possibleConstructorReturn(this, (MDCIconToggleFoundation.__proto__ || Object.getPrototypeOf(MDCIconToggleFoundation)).call(this, Object.assign(MDCIconToggleFoundation.defaultAdapter, adapter)));
+
+    _this.on_ = false;
+
+    /** @private {boolean} */
+    _this.disabled_ = false;
+
+    /** @private {number} */
+    _this.savedTabIndex_ = -1;
+
+    /** @private {?IconToggleState} */
+    _this.toggleOnData_ = null;
+
+    /** @private {?IconToggleState} */
+    _this.toggleOffData_ = null;
+
+    _this.clickHandler_ = /** @private {!EventListener} */function () {
+      return _this.toggleFromEvt_();
+    };
+
+    /** @private {boolean} */
+    _this.isHandlingKeydown_ = false;
+
+    _this.keydownHandler_ = /** @private {!EventListener} */function ( /** @type {!KeyboardKey} */evt) {
+      if (isSpace(evt)) {
+        _this.isHandlingKeydown_ = true;
+        return evt.preventDefault();
+      }
+    };
+
+    _this.keyupHandler_ = /** @private {!EventListener} */function ( /** @type {!KeyboardKey} */evt) {
+      if (isSpace(evt)) {
+        _this.isHandlingKeydown_ = false;
+        _this.toggleFromEvt_();
+      }
+    };
+    return _this;
+  }
+
+  _createClass(MDCIconToggleFoundation, [{
+    key: 'init',
+    value: function init() {
+      this.refreshToggleData();
+      this.savedTabIndex_ = this.adapter_.getTabIndex();
+      this.adapter_.registerInteractionHandler('click', this.clickHandler_);
+      this.adapter_.registerInteractionHandler('keydown', this.keydownHandler_);
+      this.adapter_.registerInteractionHandler('keyup', this.keyupHandler_);
+    }
+  }, {
+    key: 'refreshToggleData',
+    value: function refreshToggleData() {
+      var _MDCIconToggleFoundat = MDCIconToggleFoundation.strings,
+          DATA_TOGGLE_ON = _MDCIconToggleFoundat.DATA_TOGGLE_ON,
+          DATA_TOGGLE_OFF = _MDCIconToggleFoundat.DATA_TOGGLE_OFF;
+
+      this.toggleOnData_ = this.parseJsonDataAttr_(DATA_TOGGLE_ON);
+      this.toggleOffData_ = this.parseJsonDataAttr_(DATA_TOGGLE_OFF);
+    }
+  }, {
+    key: 'destroy',
+    value: function destroy() {
+      this.adapter_.deregisterInteractionHandler('click', this.clickHandler_);
+      this.adapter_.deregisterInteractionHandler('keydown', this.keydownHandler_);
+      this.adapter_.deregisterInteractionHandler('keyup', this.keyupHandler_);
+    }
+
+    /** @private */
+
+  }, {
+    key: 'toggleFromEvt_',
+    value: function toggleFromEvt_() {
+      this.toggle();
+      var isOn = this.on_;
+
+      this.adapter_.notifyChange( /** @type {!IconToggleEvent} */{ isOn: isOn });
+    }
+
+    /** @return {boolean} */
+
+  }, {
+    key: 'isOn',
+    value: function isOn() {
+      return this.on_;
+    }
+
+    /** @param {boolean=} isOn */
+
+  }, {
+    key: 'toggle',
+    value: function toggle() {
+      var isOn = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : !this.on_;
+
+      this.on_ = isOn;
+
+      var _MDCIconToggleFoundat2 = MDCIconToggleFoundation.strings,
+          ARIA_LABEL = _MDCIconToggleFoundat2.ARIA_LABEL,
+          ARIA_PRESSED = _MDCIconToggleFoundat2.ARIA_PRESSED;
+
+
+      if (this.on_) {
+        this.adapter_.setAttr(ARIA_PRESSED, 'true');
+      } else {
+        this.adapter_.setAttr(ARIA_PRESSED, 'false');
+      }
+
+      var _ref = this.on_ ? this.toggleOffData_ : this.toggleOnData_,
+          classToRemove = _ref.cssClass;
+
+      if (classToRemove) {
+        this.adapter_.removeClass(classToRemove);
+      }
+
+      var _ref2 = this.on_ ? this.toggleOnData_ : this.toggleOffData_,
+          content = _ref2.content,
+          label = _ref2.label,
+          cssClass = _ref2.cssClass;
+
+      if (cssClass) {
+        this.adapter_.addClass(cssClass);
+      }
+      if (content) {
+        this.adapter_.setText(content);
+      }
+      if (label) {
+        this.adapter_.setAttr(ARIA_LABEL, label);
+      }
+    }
+
+    /**
+     * @param {string} dataAttr
+     * @return {!IconToggleState}
+     */
+
+  }, {
+    key: 'parseJsonDataAttr_',
+    value: function parseJsonDataAttr_(dataAttr) {
+      var val = this.adapter_.getAttr(dataAttr);
+      if (!val) {
+        return {};
+      }
+      return (/** @type {!IconToggleState} */JSON.parse(val)
+      );
+    }
+
+    /** @return {boolean} */
+
+  }, {
+    key: 'isDisabled',
+    value: function isDisabled() {
+      return this.disabled_;
+    }
+
+    /** @param {boolean} isDisabled */
+
+  }, {
+    key: 'setDisabled',
+    value: function setDisabled(isDisabled) {
+      this.disabled_ = isDisabled;
+
+      var DISABLED = MDCIconToggleFoundation.cssClasses.DISABLED;
+      var ARIA_DISABLED = MDCIconToggleFoundation.strings.ARIA_DISABLED;
+
+
+      if (this.disabled_) {
+        this.savedTabIndex_ = this.adapter_.getTabIndex();
+        this.adapter_.setTabIndex(-1);
+        this.adapter_.setAttr(ARIA_DISABLED, 'true');
+        this.adapter_.addClass(DISABLED);
+      } else {
+        this.adapter_.setTabIndex(this.savedTabIndex_);
+        this.adapter_.rmAttr(ARIA_DISABLED);
+        this.adapter_.removeClass(DISABLED);
+      }
+    }
+
+    /** @return {boolean} */
+
+  }, {
+    key: 'isKeyboardActivated',
+    value: function isKeyboardActivated() {
+      return this.isHandlingKeydown_;
+    }
+  }]);
+
+  return MDCIconToggleFoundation;
+}(_foundation2.default);
+
+/**
+ * @typedef {{
+ *   key: string,
+ *   keyCode: number
+ * }}
+ */
+
+
+var KeyboardKey = void 0;
+
+/**
+ * @param {!KeyboardKey} keyboardKey
+ * @return {boolean}
+ */
+function isSpace(keyboardKey) {
+  return keyboardKey.key === 'Space' || keyboardKey.keyCode === 32;
+}
+
+/** @record */
+
+var IconToggleState = function IconToggleState() {
+  _classCallCheck(this, IconToggleState);
+};
+
+/**
+ * The aria-label value of the icon toggle, or undefined if there is no aria-label.
+ * @export {string|undefined}
+ */
+
+
+IconToggleState.prototype.label;
+
+/**
+ * The text for the icon toggle, or undefined if there is no text.
+ * @export {string|undefined}
+ */
+IconToggleState.prototype.content;
+
+/**
+ * The CSS class to add to the icon toggle, or undefined if there is no CSS class.
+ * @export {string|undefined}
+ */
+IconToggleState.prototype.cssClass;
+
+exports.default = MDCIconToggleFoundation;
+
+/***/ }),
+/* 61 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+/**
+ * @license
+ * Copyright 2017 Google Inc. All Rights Reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+/* eslint no-unused-vars: [2, {"args": "none"}] */
+
+/**
+ * Adapter for MDC Icon Toggle. Provides an interface for managing
+ * - classes
+ * - dom
+ * - inner text
+ * - event handlers
+ * - event dispatch
+ *
+ * Additionally, provides type information for the adapter to the Closure
+ * compiler.
+ *
+ * Implement this adapter for your framework of choice to delegate updates to
+ * the component in your framework of choice. See architecture documentation
+ * for more details.
+ * https://github.com/material-components/material-components-web/blob/master/docs/code/architecture.md
+ *
+ * @record
+ */
+
+var MDCIconToggleAdapter = function () {
+  function MDCIconToggleAdapter() {
+    _classCallCheck(this, MDCIconToggleAdapter);
+  }
+
+  _createClass(MDCIconToggleAdapter, [{
+    key: "addClass",
+
+    /** @param {string} className */
+    value: function addClass(className) {}
+
+    /** @param {string} className */
+
+  }, {
+    key: "removeClass",
+    value: function removeClass(className) {}
+
+    /**
+     * @param {string} type
+     * @param {!EventListener} handler
+     */
+
+  }, {
+    key: "registerInteractionHandler",
+    value: function registerInteractionHandler(type, handler) {}
+
+    /**
+     * @param {string} type
+     * @param {!EventListener} handler
+     */
+
+  }, {
+    key: "deregisterInteractionHandler",
+    value: function deregisterInteractionHandler(type, handler) {}
+
+    /** @param {string} text */
+
+  }, {
+    key: "setText",
+    value: function setText(text) {}
+
+    /** @return {number} */
+
+  }, {
+    key: "getTabIndex",
+    value: function getTabIndex() {}
+
+    /** @param {number} tabIndex */
+
+  }, {
+    key: "setTabIndex",
+    value: function setTabIndex(tabIndex) {}
+
+    /**
+     * @param {string} name
+     * @return {string}
+     */
+
+  }, {
+    key: "getAttr",
+    value: function getAttr(name) {}
+
+    /**
+     * @param {string} name
+     * @param {string} value
+     */
+
+  }, {
+    key: "setAttr",
+    value: function setAttr(name, value) {}
+
+    /** @param {string} name */
+
+  }, {
+    key: "rmAttr",
+    value: function rmAttr(name) {}
+
+    /** @param {!IconToggleEvent} evtData */
+
+  }, {
+    key: "notifyChange",
+    value: function notifyChange(evtData) {}
+  }]);
+
+  return MDCIconToggleAdapter;
+}();
+
+/**
+ * @typedef {{
+ *   isOn: boolean,
+ * }}
+ */
+
+
+var IconToggleEvent = void 0;
+
+exports.MDCIconToggleAdapter = MDCIconToggleAdapter;
+exports.IconToggleEvent = IconToggleEvent;
+
+/***/ }),
+/* 62 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+/**
+ * @license
+ * Copyright 2016 Google Inc. All Rights Reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+/** @enum {string} */
+var cssClasses = {
+  ROOT: 'mdc-icon-toggle',
+  DISABLED: 'mdc-icon-toggle--disabled'
+};
+
+/** @enum {string} */
+var strings = {
+  DATA_TOGGLE_ON: 'data-toggle-on',
+  DATA_TOGGLE_OFF: 'data-toggle-off',
+  ARIA_PRESSED: 'aria-pressed',
+  ARIA_DISABLED: 'aria-disabled',
+  ARIA_LABEL: 'aria-label',
+  CHANGE_EVENT: 'MDCIconToggle:change'
+};
+
+exports.cssClasses = cssClasses;
+exports.strings = strings;
+
+/***/ }),
+/* 63 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
 exports.MDCDialog = exports.util = exports.MDCDialogFoundation = undefined;
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
@@ -10955,13 +11863,13 @@ var _get = function get(object, property, receiver) { if (object === null) objec
 
 var _index = __webpack_require__(2);
 
-var _index2 = __webpack_require__(5);
+var _index2 = __webpack_require__(4);
 
-var _foundation = __webpack_require__(60);
+var _foundation = __webpack_require__(64);
 
 var _foundation2 = _interopRequireDefault(_foundation);
 
-var _util = __webpack_require__(62);
+var _util = __webpack_require__(66);
 
 var util = _interopRequireWildcard(_util);
 
@@ -11118,7 +12026,7 @@ var MDCDialog = exports.MDCDialog = function (_MDCComponent) {
 }(_index.MDCComponent);
 
 /***/ }),
-/* 60 */
+/* 64 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -11132,7 +12040,7 @@ var _createClass = function () { function defineProperties(target, props) { for 
 
 var _index = __webpack_require__(2);
 
-var _constants = __webpack_require__(61);
+var _constants = __webpack_require__(65);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -11327,7 +12235,7 @@ var MDCDialogFoundation = function (_MDCFoundation) {
 exports.default = MDCDialogFoundation;
 
 /***/ }),
-/* 61 */
+/* 65 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -11371,7 +12279,7 @@ var strings = exports.strings = {
 };
 
 /***/ }),
-/* 62 */
+/* 66 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -11382,7 +12290,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.createFocusTrapInstance = createFocusTrapInstance;
 
-var _focusTrap = __webpack_require__(63);
+var _focusTrap = __webpack_require__(67);
 
 var _focusTrap2 = _interopRequireDefault(_focusTrap);
 
@@ -11412,13 +12320,13 @@ function createFocusTrapInstance(surfaceEl, acceptButtonEl) {
    */
 
 /***/ }),
-/* 63 */
+/* 67 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var tabbable = __webpack_require__(64);
+var tabbable = __webpack_require__(68);
 
 var listeningFocusTrap = null;
 
@@ -11666,7 +12574,7 @@ function tryFocus(node) {
 module.exports = focusTrap;
 
 /***/ }),
-/* 64 */
+/* 68 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
